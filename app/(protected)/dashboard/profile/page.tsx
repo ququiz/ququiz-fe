@@ -9,7 +9,7 @@ const Profile = async () => {
   }
 
   return (
-    <main className="max-w-2xl mx-auto pt-20 space-y-6">
+    <main className="max-w-2xl mx-auto space-y-6">
       <h2 className="font-medium text-3xl ml-4">Profile</h2>
       <div className="bg-secondary w-full space-y-5 px-6 py-4 rounded-md shadow-md">
         <div>

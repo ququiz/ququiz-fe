@@ -1,4 +1,4 @@
-const Result = () => {
-  return <div>Result</div>;
+const Result = ({ params }: { params: { id: string } }) => {
+  return <div>Result: {params.id}</div>;
 };
 export default Result;

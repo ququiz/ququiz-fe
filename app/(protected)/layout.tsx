@@ -5,7 +5,7 @@ const ProtectedLayout = ({ children }: { children: ReactNode }) => {
   return (
     <>
       <Navbar />
-      <div className="pt-14">{children}</div>
+      <div className="pt-32 pb-20 px-8 max-w-6xl mx-auto">{children}</div>
     </>
   );
 };
