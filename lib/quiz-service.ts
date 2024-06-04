@@ -19,7 +19,7 @@ export const createQuiz = async (
       throw new Error("Failed to create quiz: " + data.message);
     }
 
-    return data;
+    return data as CreateQuizResponse;
   } catch (error: any) {
     return { error: error.message };
   }
@@ -45,7 +45,7 @@ export const updateQuiz = async (
       throw new Error("Failed to update quiz: " + data.message);
     }
 
-    return data;
+    return data as UpdateQuizResponse;
   } catch (error: any) {
     return { error: error.message };
   }
@@ -66,7 +66,7 @@ export const joinQuiz = async (quizId: string, accessToken: string) => {
       throw new Error("Failed to join quiz: " + data.message);
     }
 
-    return data;
+    return data as JoinQuizResponse;
   } catch (error: any) {
     return { error: error.message };
   }
@@ -87,7 +87,7 @@ export const deleteQuiz = async (quizId: string, accessToken: string) => {
       throw new Error("Failed to delete quiz: " + data.message);
     }
 
-    return data;
+    return data as DeleteQuizResponse;
   } catch (error: any) {
     return { error: error.message };
   }
@@ -113,7 +113,7 @@ export const addNewParticipant = async (
       throw new Error("Failed to add participant: " + data.message);
     }
 
-    return data;
+    return data as AddNewParticipantResponse;
   } catch (error: any) {
     return { error: error.message };
   }
@@ -134,7 +134,7 @@ export const startQuiz = async (quizId: string, accessToken: string) => {
       throw new Error("Failed to start quiz: " + data.message);
     }
 
-    return data;
+    return data as StartQuizResponse;
   } catch (error: any) {
     return { error: error.message };
   }

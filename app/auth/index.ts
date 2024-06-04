@@ -57,6 +57,17 @@ declare module "next-auth/jwt" {
   }
 }
 
+const dummyUser: User = {
+  user: {
+    email: "",
+    fullname: "",
+    id: "",
+    username: "",
+  },
+  accessToken: "",
+  refreshToken: "",
+};
+
 const authOptions: NextAuthConfig = {
   providers: [
     Credentials({

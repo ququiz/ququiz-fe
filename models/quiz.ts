@@ -30,6 +30,26 @@ type CreateQuizRequest = {
 
 type UpdateQuizRequest = Partial<CreateQuizRequest>;
 
+type AddNewParticipantRequest = {
+  participant_id: number;
+};
+
 /**
  * Response Object
  */
+
+type CreateQuizResponse = BaseResponse<{
+  created_quiz: {
+    id: string;
+  };
+}>;
+
+type UpdateQuizResponse = Omit<BaseResponse<{}>, "data">;
+
+type JoinQuizResponse = Omit<BaseResponse<{}>, "data">;
+
+type DeleteQuizResponse = Omit<BaseResponse<{}>, "data">;
+
+type AddNewParticipantResponse = Omit<BaseResponse<{}>, "data">;
+
+type StartQuizResponse = Omit<BaseResponse<{}>, "data">;
