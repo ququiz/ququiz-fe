@@ -5,7 +5,7 @@ import Link from "next/link";
 
 const Navbar = () => {
   return (
-    <nav className="w-full fixed bg-white top-0 flex px-4 py-3 h-14 items-center border-b justify-between">
+    <nav className="w-full fixed z-50 bg-white top-0 flex px-4 py-3 h-14 items-center border-b justify-between">
       <div className="flex h-full space-x-16">
         <Link href="/dashboard">
           <Image
@@ -49,7 +49,7 @@ const Navbar = () => {
           </li>
         </ul>
       </div>
-      <Link href={""}>
+      <Link href={"/dashboard/quiz/create"}>
         <Button className="flex items-center space-x-2" size={"sm"}>
           <PlusCircle className="w-4" />
           <span>Create a quiz</span>
