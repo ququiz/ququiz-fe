@@ -11,7 +11,7 @@ export default function Error({
   reset: () => void;
 }) {
   return (
-    <div className="w-full flex text-center items-center justify-center h-screen">
+    <div className="w-full absolute top-0 left-0 flex text-center items-center justify-center h-screen">
       <div>
         <h2 className="font-black text-5xl text-primary">Error... :(</h2>
         <p className="mt-2 max-w-prose font-medium">{error.message}</p>

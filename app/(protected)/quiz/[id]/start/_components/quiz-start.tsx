@@ -13,13 +13,20 @@ type QuizStartProps = {
 const QuizStart = ({ session, quiz }: QuizStartProps) => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [isQuestion, setIsQuestion] = useState(true);
+  const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(null);
 
   const handleNextQuestion = (answer: any) => {
     setCurrentQuestionIndex((prev) => prev + 1);
     setIsQuestion((prev) => !prev);
-    setTimeout(() => {
+    const timeoutCtx = setTimeout(() => {
       setIsQuestion((prev) => !prev);
     }, 5000);
+    setTimeoutId(timeoutCtx);
+  };
+
+  const handleSkipLeaderboard = () => {
+    clearTimeout(timeoutId as NodeJS.Timeout);
+    setIsQuestion((prev) => !prev);
   };
 
   if (isQuestion) {
@@ -31,7 +38,7 @@ const QuizStart = ({ session, quiz }: QuizStartProps) => {
       />
     );
   } else {
-    return <Leaderboard />;
+    return <Leaderboard handleSkipLeaderboard={handleSkipLeaderboard} />;
   }
 };
 export default QuizStart;

@@ -1,9 +1,13 @@
 import { Button } from "@/components/ui/button";
 
-const Leaderboard = () => {
+type LeaderboardProps = {
+  handleSkipLeaderboard: () => void;
+};
+
+const Leaderboard = ({ handleSkipLeaderboard }: LeaderboardProps) => {
   return (
     <div>
-      Leaderboard<Button>Next</Button>
+      Leaderboard<Button onClick={handleSkipLeaderboard}>Next</Button>
     </div>
   );
 };

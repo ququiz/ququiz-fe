@@ -92,3 +92,50 @@ export const deleteQuiz = async (quizId: string, accessToken: string) => {
     return { error: error.message };
   }
 };
+
+export const addNewParticipant = async (
+  participantId: string,
+  quizId: string,
+  accessToken: string
+) => {
+  try {
+    const res = await fetch(`${apiUrl}/quiz/${quizId}/participant`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify({ participantId }),
+    });
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error("Failed to add participant: " + data.message);
+    }
+
+    return data;
+  } catch (error: any) {
+    return { error: error.message };
+  }
+};
+
+export const startQuiz = async (quizId: string, accessToken: string) => {
+  try {
+    const res = await fetch(`${apiUrl}/quiz/${quizId}/start`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error("Failed to start quiz: " + data.message);
+    }
+
+    return data;
+  } catch (error: any) {
+    return { error: error.message };
+  }
+};
