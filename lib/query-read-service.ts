@@ -13,7 +13,7 @@ export const getQuizzes = async (accessToken: string) => {
       throw new Error("Failed to fetch quizzes: " + data.message);
     }
 
-    return data;
+    return data as GetQuizResponse;
   } catch (error: any) {
     return { error: error.message };
   }

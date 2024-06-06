@@ -18,34 +18,22 @@ const Dashboard = async () => {
   }
 
   const quizzes = await getQuizzes(session.accessToken);
-  console.log(quizzes);
+  if ("error" in quizzes) {
+    throw new Error(quizzes.error);
+  }
 
   return (
     <main>
       <h2 className="font-medium text-3xl">Active Quizzes</h2>
       <div className="grid mt-8 grid-cols-4 gap-4">
-        {Array(6)
-          .fill("")
-          .map((_, i) => (
-            <QuizCard href={`/quiz/${i}/waiting-room`} key={i} />
-          ))}
+        {quizzes.map((quiz, i) => (
+          <QuizCard
+            quiz={quiz}
+            href={`/quiz/${quiz.id}/waiting-room`}
+            key={quiz.id}
+          />
+        ))}
       </div>
-      <Pagination className="mt-4">
-        <PaginationContent>
-          <PaginationItem>
-            <PaginationPrevious href="#" />
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationLink href="#">1</PaginationLink>
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationEllipsis />
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationNext href="#" />
-          </PaginationItem>
-        </PaginationContent>
-      </Pagination>
     </main>
   );
 };
