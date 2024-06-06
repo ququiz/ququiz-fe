@@ -2,7 +2,9 @@ import { auth } from "@/app/auth";
 import { Button } from "@/components/ui/button";
 import { getQuizDetail } from "@/lib/query-read-service";
 import Link from "next/link";
+import Timer from "../../../../../components/timer";
 
+// TODO: Display creator data, wait backend to implement
 const WaitingRoom = async ({ params }: { params: { id: string } }) => {
   const session = await auth();
   if (!session) {
@@ -18,12 +20,23 @@ const WaitingRoom = async ({ params }: { params: { id: string } }) => {
     <main className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
       <div className="flex text-center gap-y-5 flex-col items-center">
         <div>
-          <h1 className="text-4xl font-semibold"></h1>
-          <h2 className="text-3xl font-medium">Waiting Room</h2>
-          <p className="text-lg">Quiz opens in 1d hh</p>
+          <h1 className="text-5xl mb-4 font-semibold">
+            {quizDetail.quiz.name}
+          </h1>
+          <h2 className="text-2xl font-medium">Waiting Room</h2>
+          <p>{quizDetail.quiz.participants?.length || "No"} participants</p>
+          <Timer target={quizDetail.quiz.start_time} />
         </div>
         <Link href={`/quiz/${params.id}/start`}>
-          <Button className="w-[25rem]">Start</Button>
+          <Button
+            disabled={
+              new Date().getTime() <
+              new Date(quizDetail.quiz.start_time).getTime()
+            }
+            className="w-[25rem]"
+          >
+            Start
+          </Button>
         </Link>
       </div>
     </main>
