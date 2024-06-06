@@ -5,6 +5,7 @@
 type QuestionType = "MULTIPLE" | "ESSAY";
 
 type Choice = {
+  id: string;
   text: string;
   is_correct?: boolean; // DEFAULT FALSE
 };

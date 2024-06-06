@@ -32,7 +32,7 @@ export const getQuizQuestion = async (quizId: string, accessToken: string) => {
       throw new Error("Failed to fetch quiz question: " + data?.message);
     }
 
-    return data;
+    return data as GetQuestionRes;
   } catch (error: any) {
     return { error: error.message };
   }
@@ -51,7 +51,7 @@ export const getQuizDetail = async (quizId: string, accessToken: string) => {
       throw new Error("Failed to fetch quiz request: " + data?.message);
     }
 
-    return data;
+    return data as GetQuizDetailRes;
   } catch (error: any) {
     return { error: error.message };
   }
@@ -70,7 +70,7 @@ export const getUserAnswer = async (quizId: string, accessToken: string) => {
       throw new Error("Failed to fetch user answer: " + data?.message);
     }
 
-    return data;
+    return data as GetUserAnswerRes;
   } catch (error: any) {
     return { error: error.message };
   }
@@ -119,7 +119,7 @@ export const answerQuestion = async (
       throw new Error("Failed to answer question: " + data?.message);
     }
 
-    return data;
+    return data as AnswerQuestionRes;
   } catch (error: any) {
     return { error: error.message };
   }

@@ -20,12 +20,47 @@ type Quiz = {
   participants: Participant[];
 };
 
+type QuestionAndUserAnswer = {
+  question: string;
+  type: QuestionType;
+  choices: Choice[];
+  weight: number;
+  userChoice: string;
+  userAnswer: string;
+};
+
 /**
  * Request Object
  */
+
+type AnswerQuestionReq = {
+  choiceID?: string;
+  essayAnswer?: string;
+};
 
 /**
  * Response Object
  */
 
 type GetQuizResponse = Quiz[] | null;
+
+type GetQuestionRes = {
+  id: string;
+  question: string;
+  type: string;
+  choices: Choice[];
+  weight: number;
+};
+
+type GetUserAnswerRes = {
+  user_answers: QuestionAndUserAnswer[];
+};
+
+type GetQuizDetailRes = {
+  quiz: Quiz;
+};
+
+type AnswerQuestionRes = {
+  message: string;
+  isCorrect: boolean;
+};
