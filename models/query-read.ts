@@ -28,4 +28,4 @@ type Quiz = {
  * Response Object
  */
 
-type GetQuizResponse = Quiz[];
+type GetQuizResponse = Quiz[] | null;

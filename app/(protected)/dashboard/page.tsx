@@ -18,7 +18,7 @@ const Dashboard = async () => {
   }
 
   const quizzes = await getQuizzes(session.accessToken);
-  if ("error" in quizzes) {
+  if (quizzes !== null && "error" in quizzes) {
     throw new Error(quizzes.error);
   }
 
@@ -26,13 +26,17 @@ const Dashboard = async () => {
     <main>
       <h2 className="font-medium text-3xl">Active Quizzes</h2>
       <div className="grid mt-8 grid-cols-4 gap-4">
-        {quizzes.map((quiz, i) => (
-          <QuizCard
-            quiz={quiz}
-            href={`/quiz/${quiz.id}/waiting-room`}
-            key={quiz.id}
-          />
-        ))}
+        {quizzes ? (
+          quizzes.map((quiz, i) => (
+            <QuizCard
+              quiz={quiz}
+              href={`/quiz/${quiz.id}/waiting-room`}
+              key={quiz.id}
+            />
+          ))
+        ) : (
+          <p>No quizzes found</p>
+        )}
       </div>
     </main>
   );

@@ -10,7 +10,7 @@ export const getQuizzes = async (accessToken: string) => {
     const data = await res.json();
 
     if (!res.ok) {
-      throw new Error("Failed to fetch quizzes: " + data.message);
+      throw new Error("Failed to fetch quizzes: " + data?.message);
     }
 
     return data as GetQuizResponse;
@@ -29,7 +29,7 @@ export const getQuizQuestion = async (quizId: string, accessToken: string) => {
     const data = await res.json();
 
     if (!res.ok) {
-      throw new Error("Failed to fetch quiz question: " + data.message);
+      throw new Error("Failed to fetch quiz question: " + data?.message);
     }
 
     return data;
@@ -48,7 +48,7 @@ export const getQuizDetail = async (quizId: string, accessToken: string) => {
     const data = await res.json();
 
     if (!res.ok) {
-      throw new Error("Failed to fetch quiz request: " + data.message);
+      throw new Error("Failed to fetch quiz request: " + data?.message);
     }
 
     return data;
@@ -67,10 +67,78 @@ export const getUserAnswer = async (quizId: string, accessToken: string) => {
     const data = await res.json();
 
     if (!res.ok) {
-      throw new Error("Failed to fetch user answer: " + data.message);
+      throw new Error("Failed to fetch user answer: " + data?.message);
     }
 
     return data;
+  } catch (error: any) {
+    return { error: error.message };
+  }
+};
+
+export const getCreatedQuizzes = async (accessToken: string) => {
+  try {
+    const res = await fetch(`${apiUrl}/api/v1/quiz/mine`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error("Failed to fetch created quizzes: " + data?.message);
+    }
+
+    return data as GetQuizResponse;
+  } catch (error: any) {
+    return { error: error.message };
+  }
+};
+
+export const answerQuestion = async (
+  questionId: string,
+  quizId: string,
+  values: any,
+  accessToken: string
+) => {
+  try {
+    const res = await fetch(
+      `${apiUrl}/api/v1/quiz/${quizId}/questions/${questionId}/answer`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(values),
+      }
+    );
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error("Failed to answer question: " + data?.message);
+    }
+
+    return data;
+  } catch (error: any) {
+    return { error: error.message };
+  }
+};
+
+export const getQuizHistory = async (accessToken: string) => {
+  try {
+    const res = await fetch(`${apiUrl}/api/v1/quiz/history`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error("Failed to fetch quiz history: " + data?.message);
+    }
+
+    return data as GetQuizResponse;
   } catch (error: any) {
     return { error: error.message };
   }

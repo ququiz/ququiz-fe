@@ -8,11 +8,6 @@ type QuizCardProps = {
 };
 
 const QuizCard = async ({ quiz, href }: QuizCardProps) => {
-  // const user = await getUserById(quiz.creator_id)
-  // if ("error" in user) {
-  //   throw new Error(user.error);
-  // }
-
   return (
     <Link className="block" href={href}>
       <div className="shadow-md rounded-md overflow-hidden hover:scale-[1.02] cursor-pointer transition">
@@ -25,7 +20,7 @@ const QuizCard = async ({ quiz, href }: QuizCardProps) => {
         />
         <div className="py-3 px-5">
           <h3 className="font-medium text-xl">{quiz.name}</h3>
-          <p className="text-gray-400 text-xs">By </p>
+          <p className="text-gray-400 text-xs">By</p>
         </div>
       </div>
     </Link>

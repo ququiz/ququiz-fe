@@ -1,5 +1,6 @@
 import { auth } from "@/app/auth";
 import { Button } from "@/components/ui/button";
+import { getQuizDetail } from "@/lib/query-read-service";
 import Link from "next/link";
 
 const WaitingRoom = async ({ params }: { params: { id: string } }) => {
@@ -8,11 +9,16 @@ const WaitingRoom = async ({ params }: { params: { id: string } }) => {
     throw new Error("Unauthorized");
   }
 
+  const quizDetail = await getQuizDetail(params.id, session.accessToken);
+  if ("error" in quizDetail) {
+    throw new Error(quizDetail.error);
+  }
+
   return (
     <main className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
       <div className="flex text-center gap-y-5 flex-col items-center">
         <div>
-          <h1 className="text-4xl font-semibold">Quiz name</h1>
+          <h1 className="text-4xl font-semibold"></h1>
           <h2 className="text-3xl font-medium">Waiting Room</h2>
           <p className="text-lg">Quiz opens in 1d hh</p>
         </div>

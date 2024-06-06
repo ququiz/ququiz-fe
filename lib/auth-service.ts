@@ -2,7 +2,7 @@ const apiUrl = process.env.NEXT_PUBLIC_AUTH_API_URL;
 
 export const getUserById = async (userId: string) => {
   try {
-    const res = await fetch(`${apiUrl}/api/v1/user/${userId}`);
+    const res = await fetch(`${apiUrl}/users/${userId}`);
     const data = await res.json();
 
     if (!res.ok) {

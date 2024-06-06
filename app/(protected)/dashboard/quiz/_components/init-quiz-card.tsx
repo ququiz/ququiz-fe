@@ -41,7 +41,6 @@ const InitQuizCard = ({ session }: InitQuizCardProps) => {
     resolver: zodResolver(initQuizSchema),
     defaultValues: getDefaults(initQuizSchema),
   });
-  console.log(addForm.formState.errors);
 
   async function onAddSubmit(values: z.infer<typeof initQuizSchema>) {
     console.log(values);
