@@ -12,7 +12,6 @@ import {
 import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { revalidatePathServer } from "@/lib/server-utils";
 import { toast } from "sonner";
 import { Session } from "next-auth";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -43,17 +42,17 @@ const InitQuizCard = ({ session }: InitQuizCardProps) => {
   });
 
   async function onAddSubmit(values: z.infer<typeof initQuizSchema>) {
-    console.log(values);
-
     startAddTransition(async () => {
       const data = await createQuiz(values, session.accessToken);
       if ("error" in data) {
         toast.error(data.error);
         return;
       } else {
-        toast.success("Redirection link created successfully");
+        toast.success("Quiz created successfully");
         addForm.reset(getDefaults(initQuizSchema));
-        router.push(`/dashboard/quiz`);
+        if (data.data) {
+          router.push(`/dashboard/quiz/${data.data.created_quiz.id}/edit`);
+        }
       }
     });
   }

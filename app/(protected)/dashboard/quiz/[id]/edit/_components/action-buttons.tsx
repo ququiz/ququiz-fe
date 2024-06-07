@@ -22,7 +22,7 @@ import { Form } from "@/components/ui/form";
 
 type ActionButtonsProps = {
   session: Session;
-  quiz: any;
+  quiz: Quiz;
 };
 
 const ActionButtons = ({ session, quiz }: ActionButtonsProps) => {
@@ -96,7 +96,7 @@ const ActionButtons = ({ session, quiz }: ActionButtonsProps) => {
                 type="datetime-local"
               />
               <Button disabled={loading} type="submit">
-                {loading ? "Loading" : "Create question"}
+                {loading ? "Loading" : "Change settings"}
               </Button>
             </form>
           </Form>

@@ -16,6 +16,7 @@ type Quiz = {
   passcode: string;
   start_time: string; // ISO 8601 date string
   end_time: string; // ISO 8601 date string
+  questions: Question[];
   status: "NOT_STARTED" | "IN_PROGRESS" | "DONE"; // Assuming "DONE" might be a possible status based on context
   participants: Participant[];
 };
@@ -50,7 +51,7 @@ type GetQuestionRes = {
   type: string;
   choices: Choice[];
   weight: number;
-};
+}[];
 
 type GetUserAnswerRes = {
   user_answers: QuestionAndUserAnswer[];

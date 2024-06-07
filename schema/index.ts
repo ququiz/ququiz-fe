@@ -1,17 +1,27 @@
 import { z } from "zod";
 
-export const newMultipleQuestionSchema = z.object({
-  question: z.string().min(1, "Question is required"),
-  type: z.literal("MULTIPLE"),
-  weight: z.number().int().min(1, "Weight must be at least 1"),
-  choices: z
-    .array(z.string().min(1, "Answer is required"))
-    .length(4, "Options must be 4"),
-  answer: z.coerce
-    .number()
-    .min(1, "There's only four choices...")
-    .max(4, "There's only four choices..."),
-});
+export const newMultipleQuestionSchema = z
+  .object({
+    question: z.string().min(1, "Question is required"),
+    type: z.literal("MULTIPLE"),
+    weight: z.coerce.number().int().min(1, "Weight must be at least 1"),
+    choices: z
+      .array(z.string().min(1, "Answer is required"))
+      .length(4, "Options must be 4"),
+    answer: z.coerce
+      .number()
+      .min(1, "There's only four choices...")
+      .max(4, "There's only four choices..."),
+  })
+  .transform((val) => {
+    const choices = val.choices.map((choice, index) => ({
+      text: choice,
+      is_correct: index + 1 === val.answer,
+    }));
+    const newObj = { ...val, choices };
+
+    return newObj;
+  });
 
 // export const newMultipleImageQuestionSchema = z.object({
 //   question: z.string().min(1, "Question is required"),
@@ -41,12 +51,16 @@ export const quizSettingsSchema = z.object({
   start_time: z
     .any()
     .transform((dateString: string) => new Date(dateString))
-    .transform((date) => (date ? date.toISOString() : new Date())),
+    .transform((date) =>
+      date ? date.toISOString() : new Date().toISOString()
+    ),
   end_time: z
     .any()
     .transform((dateString: string) => new Date(dateString))
     .refine((date) => date > new Date(), "End date must be in the future")
-    .transform((date) => (date ? date.toISOString() : new Date())),
+    .transform((date) =>
+      date ? date.toISOString() : new Date().toISOString()
+    ),
 });
 
 export const initQuizSchema = z.object({
@@ -54,11 +68,15 @@ export const initQuizSchema = z.object({
   start_time: z
     .any()
     .transform((dateString: string) => new Date(dateString))
-    .transform((date) => (date ? date.toISOString() : new Date())),
+    .transform((date) =>
+      date ? date.toISOString() : new Date().toISOString()
+    ),
   end_time: z
     .any()
     .transform((dateString: string) => new Date(dateString))
     .refine((date) => date > new Date(), "End date must be in the future")
-    .transform((date) => (date ? date.toISOString() : new Date())),
+    .transform((date) =>
+      date ? date.toISOString() : new Date().toISOString()
+    ),
   questions: z.array(newMultipleQuestionSchema),
 });

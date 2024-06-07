@@ -21,7 +21,7 @@ export const getQuizzes = async (accessToken: string) => {
 
 export const getQuizQuestion = async (quizId: string, accessToken: string) => {
   try {
-    const res = await fetch(`${apiUrl}/api/v1/quiz/${quizId}`, {
+    const res = await fetch(`${apiUrl}/api/v1/quiz/${quizId}/questions`, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
