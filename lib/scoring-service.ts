@@ -13,7 +13,7 @@ export const getLeaderboard = async (quizId: string, accessToken: string) => {
       throw new Error("Failed to fetch leaderboard: " + data?.message);
     }
 
-    return data;
+    return data as GetLeaderboardRes;
   } catch (error: any) {
     return { error: error.message };
   }
