@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { Settings, Upload } from "lucide-react";
+import { Settings, Trash2 } from "lucide-react";
 import { Session } from "next-auth";
 import { useState, useTransition } from "react";
 import {
@@ -121,7 +121,7 @@ const ActionButtons = ({ session, quiz }: ActionButtonsProps) => {
       {/* Upload button */}
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
-          <Upload
+          <Trash2
             className={cn(
               `cursor-pointer`,
               loading && "opacity-75 cursor-default animate-bounce"
