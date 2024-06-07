@@ -155,7 +155,7 @@ const InitQuizCard = ({ session }: InitQuizCardProps) => {
                 </>
               )}
               <Button disabled={loading} type="submit">
-                {loading ? "Loading" : "Create question"}
+                {loading ? "Loading" : "Initialize quiz"}
               </Button>
             </form>
           </Form>

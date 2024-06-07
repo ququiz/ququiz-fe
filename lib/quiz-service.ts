@@ -32,7 +32,7 @@ export const updateQuiz = async (
 ) => {
   try {
     const res = await fetch(`${apiUrl}/quiz/${quizId}`, {
-      method: "PATCH",
+      method: "PUT",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${accessToken}`,

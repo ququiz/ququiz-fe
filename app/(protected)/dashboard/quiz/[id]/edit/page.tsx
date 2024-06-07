@@ -36,7 +36,7 @@ const EditQuiz = async ({ params }: { params: { id: string } }) => {
         {quiz.quiz.questions.map((q) => (
           <QuestionCard key={q.question} />
         ))}
-        <NewQuestionCard session={session} />
+        <NewQuestionCard quiz={quiz.quiz} session={session} />
       </div>
     </main>
   );

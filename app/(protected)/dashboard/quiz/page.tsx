@@ -18,10 +18,10 @@ const UserQuizzesList = async () => {
       <h2 className="font-medium text-3xl">Your Quizzes</h2>
       <div className="grid mt-8 grid-cols-4 gap-4">
         {userQuizzes ? (
-          userQuizzes.map((quiz, i) => (
+          userQuizzes.map((quiz) => (
             <QuizCard
               quiz={quiz}
-              href={`/dashboard/quiz/${i}/edit`}
+              href={`/dashboard/quiz/${quiz.id}/edit`}
               key={quiz.id}
             />
           ))

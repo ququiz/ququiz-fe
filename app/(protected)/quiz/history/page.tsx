@@ -18,8 +18,12 @@ const QuizHistory = async () => {
       <h2 className="font-medium text-3xl">Quiz History</h2>
       <div className="grid mt-8 grid-cols-4 gap-4">
         {quizHistory ? (
-          quizHistory.map((quiz, i) => (
-            <QuizCard quiz={quiz} href={`/quiz/${i}/result`} key={quiz.id} />
+          quizHistory.map((quiz) => (
+            <QuizCard
+              quiz={quiz}
+              href={`/quiz/${quiz.id}/result`}
+              key={quiz.id}
+            />
           ))
         ) : (
           <p>No quizzes found</p>

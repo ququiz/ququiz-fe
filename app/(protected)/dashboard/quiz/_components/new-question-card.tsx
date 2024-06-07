@@ -19,18 +19,18 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import FormInput from "@/components/form/input";
-import {
-  newMultipleImageQuestionSchema,
-  newMultipleQuestionSchema,
-} from "@/schema";
+import { newMultipleQuestionSchema } from "@/schema";
 import FormRadio from "@/components/form/radio";
 import { getDefaults } from "@/lib/utils";
+import { updateQuiz } from "@/lib/quiz-service";
 
 type NewQuestionCardProps = {
   session: Session;
+  quiz: Quiz;
 };
 
-const NewQuestionCard = ({ session }: NewQuestionCardProps) => {
+// TODO: Question dari backend masih belum sesuai
+const NewQuestionCard = ({ session, quiz }: NewQuestionCardProps) => {
   const [questionType, setQuestionType] = useState<
     "multiple" | "images" | "fill"
   >("multiple");
@@ -45,19 +45,24 @@ const NewQuestionCard = ({ session }: NewQuestionCardProps) => {
   async function onAddSubmit(
     values: z.infer<typeof newMultipleQuestionSchema>
   ) {
-    console.log(values);
+    startAddTransition(async () => {
+      const updatedQuiz = {
+        title: quiz.name,
+        start_time: quiz.start_time,
+        end_time: quiz.end_time,
+        questions: [...quiz.questions, values],
+      };
 
-    // startAddTransition(async () => {
-    //   const data = await initDeposit(session.accessToken, values.amount);
-    //   if ("error" in data) {
-    //     toast.error(data.error);
-    //     return;
-    //   } else {
-    //     toast.success("Redirection link created successfully");
-    //     await revalidatePathServer("/dashboard/billing");
-    //     addForm.reset(initDepositDefault);
-    //   }
-    // });
+      const data = await updateQuiz(updatedQuiz, quiz.id, session.accessToken);
+      if ("error" in data) {
+        toast.error(data.error);
+        return;
+      } else {
+        toast.success("New question created successfully");
+        await revalidatePathServer(`/dashboard/quiz/${quiz.id}/edit`);
+        addForm.reset(getDefaults(newMultipleQuestionSchema));
+      }
+    });
   }
 
   return (
@@ -90,63 +95,39 @@ const NewQuestionCard = ({ session }: NewQuestionCardProps) => {
               />
               <FormRadio
                 label="Question type"
-                name="questionType"
+                name="type"
                 items={[
-                  { value: "multiple", label: "Multiple choice" },
-                  { value: "images", label: "Multiple choice (with images)" },
-                  { value: "fill", label: "Fill in the blank" },
+                  { value: "MULTIPLE", label: "Multiple choice" },
+                  { value: "ESSAY", label: "Fill in the blank" },
                 ]}
+              />
+              <FormInput
+                label="Question weight"
+                name="weight"
+                placeholder="Question weight"
+                type="number"
               />
               {questionType === "multiple" && (
                 <>
                   <FormInput
-                    label="Option 1"
-                    name="options[0]"
-                    placeholder="Option 1"
+                    label="Choice 1"
+                    name="choices[0]"
+                    placeholder="Choice 1"
                   />
                   <FormInput
-                    label="Option 2"
-                    name="options[1]"
-                    placeholder="Option 2"
+                    label="Choice 2"
+                    name="choices[1]"
+                    placeholder="Choice 2"
                   />
                   <FormInput
-                    label="Option 3"
-                    name="options[2]"
-                    placeholder="Option 3"
+                    label="Choice 3"
+                    name="choices[2]"
+                    placeholder="Choice 3"
                   />
                   <FormInput
-                    label="Option 4"
-                    name="options[3]"
-                    placeholder="Option 4"
-                  />
-                  <FormInput
-                    label="Answer"
-                    name="answer"
-                    placeholder="Answer"
-                  />
-                </>
-              )}
-              {questionType === "images" && (
-                <>
-                  <FormInput
-                    label="Option 1"
-                    name="options[0].value"
-                    placeholder="Option 1"
-                  />
-                  <FormInput
-                    label="Option 2"
-                    name="options[1].value"
-                    placeholder="Option 2"
-                  />
-                  <FormInput
-                    label="Option 3"
-                    name="options[2].value"
-                    placeholder="Option 3"
-                  />
-                  <FormInput
-                    label="Option 4"
-                    name="options[3].value"
-                    placeholder="Option 4"
+                    label="Choice 4"
+                    name="choices[3]"
+                    placeholder="Choice 4"
                   />
                   <FormInput
                     label="Answer"

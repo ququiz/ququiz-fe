@@ -1,5 +1,3 @@
-// TODO: Pastikan hanya author yang bisa edit quiz
-
 import { Separator } from "@/components/ui/separator";
 import { auth } from "@/app/auth";
 import InitQuizCard from "../_components/init-quiz-card";

@@ -1,6 +1,6 @@
 "use client";
 
-import { cn, getDefaults } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 import { Settings, Upload } from "lucide-react";
 import { Session } from "next-auth";
 import { useState, useTransition } from "react";
@@ -19,6 +19,9 @@ import { quizSettingsSchema } from "@/schema";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form } from "@/components/ui/form";
+import { toast } from "sonner";
+import { updateQuiz } from "@/lib/quiz-service";
+import { revalidatePathServer } from "@/lib/server-utils";
 
 type ActionButtonsProps = {
   session: Session;
@@ -31,25 +34,28 @@ const ActionButtons = ({ session, quiz }: ActionButtonsProps) => {
 
   const [loading, startTransition] = useTransition();
 
+  const quizSettingsDefault = {
+    title: quiz.name,
+    start_time: quiz.start_time.slice(0, quiz.start_time.length - 1),
+    end_time: quiz.end_time.slice(0, quiz.end_time.length - 1),
+  };
+
   const addForm = useForm<z.infer<typeof quizSettingsSchema>>({
     resolver: zodResolver(quizSettingsSchema),
-    defaultValues: getDefaults(quizSettingsSchema),
+    defaultValues: quizSettingsDefault,
   });
 
   async function onAddSubmit(values: z.infer<typeof quizSettingsSchema>) {
-    console.log(values);
-
-    // startAddTransition(async () => {
-    //   const data = await initDeposit(session.accessToken, values.amount);
-    //   if ("error" in data) {
-    //     toast.error(data.error);
-    //     return;
-    //   } else {
-    //     toast.success("Redirection link created successfully");
-    //     await revalidatePathServer("/dashboard/billing");
-    //     addForm.reset(initDepositDefault);
-    //   }
-    // });
+    startTransition(async () => {
+      const data = await updateQuiz(values, quiz.id, session.accessToken);
+      if ("error" in data) {
+        toast.error(data.error);
+        return;
+      } else {
+        toast.success("Settings updated successfully");
+        await revalidatePathServer(`/dashboard/quiz/${quiz.id}/edit`);
+      }
+    });
   }
 
   const handleUploadQuiz = async () => {
@@ -82,17 +88,17 @@ const ActionButtons = ({ session, quiz }: ActionButtonsProps) => {
             >
               <FormInput
                 label="Quiz name"
-                name="quizName"
+                name="title"
                 placeholder="Quiz name"
               />
               <FormInput
                 label="Start Date and Time"
-                name="startDateTime"
+                name="start_time"
                 type="datetime-local"
               />
               <FormInput
                 label="End Date and Time"
-                name="endDateTime"
+                name="end_time"
                 type="datetime-local"
               />
               <Button disabled={loading} type="submit">

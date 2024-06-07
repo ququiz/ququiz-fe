@@ -35,7 +35,7 @@ const Timer = ({ target }: TimerProps) => {
     return () => clearInterval(interval);
   }, [target]);
 
-  return <p className="">{countdown}</p>;
+  return <p className="text-sm">{countdown}</p>;
 };
 
 export default Timer;
