@@ -20,8 +20,9 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form } from "@/components/ui/form";
 import { toast } from "sonner";
-import { updateQuiz } from "@/lib/quiz-service";
+import { deleteQuiz, updateQuiz } from "@/lib/quiz-service";
 import { revalidatePathServer } from "@/lib/server-utils";
+import { useRouter } from "next/navigation";
 
 type ActionButtonsProps = {
   session: Session;
@@ -33,6 +34,8 @@ const ActionButtons = ({ session, quiz }: ActionButtonsProps) => {
   const [openSettings, setOpenSettings] = useState(false);
 
   const [loading, startTransition] = useTransition();
+
+  const router = useRouter();
 
   const quizSettingsDefault = {
     title: quiz.name,
@@ -58,9 +61,15 @@ const ActionButtons = ({ session, quiz }: ActionButtonsProps) => {
     });
   }
 
-  const handleUploadQuiz = async () => {
+  const handleDeleteQuiz = async () => {
     startTransition(async () => {
-      console.log("Upload:", quiz);
+      const data = await deleteQuiz(quiz.id, session.accessToken);
+      if ("error" in data) {
+        toast.error(data.error);
+      } else {
+        toast.success("Quiz deleted successfully");
+        router.replace("/dashboard/quiz");
+      }
     });
   };
 
@@ -121,13 +130,19 @@ const ActionButtons = ({ session, quiz }: ActionButtonsProps) => {
         </DialogTrigger>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Upload quiz changes</DialogTitle>
+            <DialogTitle>Delete quiz</DialogTitle>
             <DialogDescription>
-              Are you sure you want to make changes to this quiz?
+              Are you sure you want to delete this quiz?
             </DialogDescription>
           </DialogHeader>
           <div className="flex items-center justify-between">
-            <Button onClick={handleUploadQuiz}>Yes</Button>
+            <Button
+              disabled={loading}
+              variant={"destructive"}
+              onClick={handleDeleteQuiz}
+            >
+              Delete
+            </Button>
             <Button onClick={() => setOpen((val) => !val)} variant={"ghost"}>
               Cancel
             </Button>
