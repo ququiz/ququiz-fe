@@ -7,7 +7,7 @@ type TimerProps = {
 };
 
 const Timer = ({ target }: TimerProps) => {
-  const [countdown, setCountdown] = useState("");
+  const [countdown, setCountdown] = useState("Quiz opens in ???");
 
   useEffect(() => {
     const interval = setInterval(() => {
