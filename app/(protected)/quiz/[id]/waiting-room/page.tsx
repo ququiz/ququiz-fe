@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { getQuizDetail } from "@/lib/query-read-service";
 import Link from "next/link";
 import Timer from "../../../../../components/timer";
+import StartButton from "./_components/start-button";
 
 // TODO: Display creator data, wait backend to implement
 const WaitingRoom = async ({ params }: { params: { id: string } }) => {
@@ -28,15 +29,7 @@ const WaitingRoom = async ({ params }: { params: { id: string } }) => {
           <Timer target={quizDetail.quiz.start_time} />
         </div>
         <Link href={`/quiz/${params.id}/start`}>
-          <Button
-            disabled={
-              new Date().getTime() <
-              new Date(quizDetail.quiz.start_time).getTime()
-            }
-            className="w-[25rem]"
-          >
-            Start
-          </Button>
+          <StartButton session={session} quiz={quizDetail.quiz} />
         </Link>
       </div>
     </main>
