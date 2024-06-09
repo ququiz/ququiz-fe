@@ -16,7 +16,7 @@ const UserQuizzesList = async () => {
   return (
     <main>
       <h2 className="font-medium text-3xl">Your Quizzes</h2>
-      <div className="grid mt-8 grid-cols-4 gap-4">
+      <div className="columns-4 mt-8 space-y-4">
         {userQuizzes && userQuizzes.length !== 0 ? (
           userQuizzes.map((quiz) => (
             <QuizCard
