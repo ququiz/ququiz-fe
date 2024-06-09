@@ -8,6 +8,7 @@ import { answerQuestion } from "@/lib/query-read-service";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { getLeaderboard } from "@/lib/scoring-service";
+import { AnimatePresence, motion } from "framer-motion";
 
 type QuizStartProps = {
   session: Session;
@@ -70,23 +71,42 @@ const QuizStart = ({ session, quiz }: QuizStartProps) => {
     setIsQuestion((prev) => !prev);
   };
 
-  if (isQuestion) {
-    return (
-      <Question
-        quiz={quiz}
-        loading={loading}
-        index={currentQuestionIndex}
-        handleNextQuestion={handleNextQuestion}
-        question={quiz.questions[currentQuestionIndex]}
-      />
-    );
-  } else {
-    return (
-      <Leaderboard
-        leaderboard={leaderboard}
-        handleSkipLeaderboard={handleSkipLeaderboard}
-      />
-    );
-  }
+  return (
+    <>
+      <AnimatePresence>
+        {isQuestion && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            <Question
+              quiz={quiz}
+              loading={loading}
+              index={currentQuestionIndex}
+              handleNextQuestion={handleNextQuestion}
+              question={quiz.questions[currentQuestionIndex]}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
+      <AnimatePresence>
+        {!isQuestion && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            <Leaderboard
+              leaderboard={leaderboard}
+              handleSkipLeaderboard={handleSkipLeaderboard}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
+  );
 };
 export default QuizStart;
