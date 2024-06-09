@@ -3,9 +3,13 @@ import { Separator } from "@/components/ui/separator";
 
 type LeaderboardProps = {
   handleSkipLeaderboard: () => void;
+  leaderboard: Leaderboard[] | null;
 };
 
-const Leaderboard = ({ handleSkipLeaderboard }: LeaderboardProps) => {
+const Leaderboard = ({
+  leaderboard,
+  handleSkipLeaderboard,
+}: LeaderboardProps) => {
   return (
     <div className="max-w-2xl mx-auto">
       <h2 className="font-semibold text-xl text-center">Leaderboard</h2>
@@ -16,18 +20,22 @@ const Leaderboard = ({ handleSkipLeaderboard }: LeaderboardProps) => {
           <span>Name</span>
           <span className="text-right">Score</span>
         </div>
-        {Array(10)
-          .fill(0)
-          .map((_, index) => (
+        {leaderboard ? (
+          leaderboard.map((user, index) => (
             <div
               key={index}
               className="bg-secondary shadow-md rounded-md py-3 px-6 grid grid-cols-3 justify-between items-center"
             >
               <span>{index + 1}</span>
-              <span>John Doe</span>
-              <span className="text-right">100</span>
+              <span>{user.username}</span>
+              <span className="text-right">{user.score}</span>
             </div>
-          ))}
+          ))
+        ) : (
+          <div className="bg-secondary shadow-md rounded-md py-3 px-6 grid grid-cols-3 justify-between items-center">
+            <span>Loading...</span>
+          </div>
+        )}
       </div>
       <Button
         className="ml-auto block mt-6 w-28"

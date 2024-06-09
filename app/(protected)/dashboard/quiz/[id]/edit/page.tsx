@@ -33,9 +33,10 @@ const EditQuiz = async ({ params }: { params: { id: string } }) => {
       </div>
       <Separator className="my-4" />
       <div className="space-y-4">
-        {quiz.quiz.questions.map((q) => (
+        {quiz.quiz.questions.map((q, index) => (
           <QuestionCard
             quiz={quiz.quiz}
+            index={index}
             allQuestions={quiz.quiz.questions}
             question={q}
             key={q.question}

@@ -6,12 +6,14 @@ type QuestionCardProps = {
   allQuestions: Question[];
   quiz: Quiz;
   question: Question;
+  index: number;
 };
 
 const QuestionCard = async ({
   quiz,
   allQuestions,
   question,
+  index,
 }: QuestionCardProps) => {
   const session = await auth();
   if (!session) {
@@ -23,7 +25,9 @@ const QuestionCard = async ({
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-4">
           <GripVertical />
-          <span>1) {question.question}</span>
+          <span>
+            {index + 1}) {question.question}
+          </span>
         </div>
         <div className="flex items-center space-x-4">
           <p className="text-sm">{question.weight} points</p>

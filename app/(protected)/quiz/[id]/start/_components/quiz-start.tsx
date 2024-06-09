@@ -7,6 +7,7 @@ import Leaderboard from "./leaderboard";
 import { answerQuestion } from "@/lib/query-read-service";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { getLeaderboard } from "@/lib/scoring-service";
 
 type QuizStartProps = {
   session: Session;
@@ -18,6 +19,7 @@ const QuizStart = ({ session, quiz }: QuizStartProps) => {
   const [isQuestion, setIsQuestion] = useState(true);
   const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(null);
   const [loading, startTransition] = useTransition();
+  const [leaderboard, setLeaderboard] = useState<Leaderboard[] | null>([]);
   const router = useRouter();
 
   const noOfQuestions = quiz.questions.length;
@@ -44,14 +46,22 @@ const QuizStart = ({ session, quiz }: QuizStartProps) => {
 
       if ("error" in data) {
         toast.error("Failed to answer question: " + data.error);
-      } else {
-        setCurrentQuestionIndex((prev) => prev + 1);
-        setIsQuestion((prev) => !prev);
-        const timeoutCtx = setTimeout(() => {
-          setIsQuestion((prev) => !prev);
-        }, 5000);
-        setTimeoutId(timeoutCtx);
+        return;
       }
+
+      const leaderboard = await getLeaderboard(quiz.id, session.accessToken);
+      if ("error" in leaderboard) {
+        toast.error("Failed to get leaderboard: " + leaderboard.error);
+        return;
+      }
+
+      setLeaderboard(leaderboard.leaderboard);
+      setCurrentQuestionIndex((prev) => prev + 1);
+      setIsQuestion((prev) => !prev);
+      const timeoutCtx = setTimeout(() => {
+        setIsQuestion((prev) => !prev);
+      }, 5000);
+      setTimeoutId(timeoutCtx);
     });
   };
 
@@ -71,7 +81,12 @@ const QuizStart = ({ session, quiz }: QuizStartProps) => {
       />
     );
   } else {
-    return <Leaderboard handleSkipLeaderboard={handleSkipLeaderboard} />;
+    return (
+      <Leaderboard
+        leaderboard={leaderboard}
+        handleSkipLeaderboard={handleSkipLeaderboard}
+      />
+    );
   }
 };
 export default QuizStart;
