@@ -27,7 +27,7 @@ type CreateQuizRequest = {
   title: string;
   start_time: string; // DATE
   end_time: string; // DATE
-  questions: Question[];
+  questions: Omit<Question, "id">[];
 };
 
 type UpdateQuizRequest = Partial<CreateQuizRequest>;

@@ -23,6 +23,7 @@ import FormRadio from "@/components/form/radio";
 import { getDefaults } from "@/lib/utils";
 import { createQuiz } from "@/lib/quiz-service";
 import { useRouter } from "next/navigation";
+import { revalidatePathServer } from "@/lib/server-utils";
 
 type InitQuizCardProps = {
   session: Session;
@@ -52,6 +53,8 @@ const InitQuizCard = ({ session }: InitQuizCardProps) => {
         addForm.reset(getDefaults(initQuizSchema));
         if (data.data) {
           router.push(`/dashboard/quiz/${data.data.created_quiz.id}/edit`);
+          revalidatePathServer("/dashboard");
+          revalidatePathServer("/dashboard/quiz");
         }
       }
     });
