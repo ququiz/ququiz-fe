@@ -31,6 +31,8 @@ type NewQuestionCardProps = {
 
 // TODO: Question dari backend masih belum sesuai
 const NewQuestionCard = ({ session, quiz }: NewQuestionCardProps) => {
+  const [open, setOpen] = useState(false);
+
   const [questionType, setQuestionType] = useState<
     "multiple" | "images" | "fill"
   >("multiple");
@@ -61,13 +63,14 @@ const NewQuestionCard = ({ session, quiz }: NewQuestionCardProps) => {
         toast.success("New question created successfully");
         await revalidatePathServer(`/dashboard/quiz/${quiz.id}/edit`);
         addForm.reset(getDefaults(newMultipleQuestionSchema));
+        setOpen(!open);
       }
     });
   }
 
   return (
     <>
-      <Dialog>
+      <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
           <div className="bg-secondary hover:bg-secondary/80 cursor-pointer h-60 flex items-center justify-center rounded-md shadow-md p-6">
             <div className="flex flex-col space-y-2 items-center">

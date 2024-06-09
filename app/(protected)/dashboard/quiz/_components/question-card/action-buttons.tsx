@@ -15,6 +15,12 @@ import { updateQuiz } from "@/lib/quiz-service";
 import { Session } from "next-auth";
 import { toast } from "sonner";
 import { revalidatePathServer } from "@/lib/server-utils";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { newMultipleQuestionSchema } from "@/schema";
+import FormInput from "@/components/form/input";
+import { Form } from "@/components/ui/form";
 
 type ActionButtonsProps = {
   allQuestions: Question[];
@@ -30,6 +36,7 @@ const ActionButtons = ({
   session,
 }: ActionButtonsProps) => {
   const [open, setOpen] = useState(false);
+  const [openEdit, setOpenEdit] = useState(false);
   const [loading, startTransition] = useTransition();
 
   const handleDeleteQuestion = async () => {
@@ -55,11 +62,46 @@ const ActionButtons = ({
     });
   };
 
-  const handleEditQuiz = async () => {
-    startTransition(async () => {
-      console.log("Editing quiz...");
-    });
+  const quizDetailsDefault = {
+    question: question.question,
+    choices: question.choices!.map((c) => c.text) as any,
+    weight: question.weight,
+    type: "MULTIPLE" as "MULTIPLE",
+    answer: question.choices!.findIndex((c) => c.is_correct) + 1,
   };
+
+  const addForm = useForm<z.infer<typeof newMultipleQuestionSchema>>({
+    resolver: zodResolver(newMultipleQuestionSchema),
+    defaultValues: quizDetailsDefault,
+  });
+
+  async function onAddSubmit(
+    values: z.infer<typeof newMultipleQuestionSchema>
+  ) {
+    startTransition(async () => {
+      let newQuestions: Question[] = allQuestions.map((q) => {
+        if (q.question === question.question) {
+          return values;
+        }
+        return q;
+      });
+
+      const data = await updateQuiz(
+        { questions: newQuestions },
+        quiz.id,
+        session.accessToken
+      );
+
+      if ("error" in data) {
+        toast.error("Failed to update question: " + data.error);
+        return;
+      } else {
+        toast.success("Question updated successfully");
+        await revalidatePathServer(`/dashboard/quiz/${quiz.id}/edit`);
+        setOpenEdit(!openEdit);
+      }
+    });
+  }
 
   return (
     <>
@@ -89,18 +131,59 @@ const ActionButtons = ({
         </DialogContent>
       </Dialog>
 
-      <Dialog>
+      <Dialog open={openEdit} onOpenChange={setOpenEdit}>
         <DialogTrigger>
           <Edit className="w-5 cursor-pointer" />
         </DialogTrigger>
-        <DialogContent>
+        <DialogContent className="max-h-[80vh] overflow-y-scroll">
           <DialogHeader>
-            <DialogTitle>Are you absolutely sure?</DialogTitle>
+            <DialogTitle>Edit Question</DialogTitle>
             <DialogDescription>
-              This action cannot be undone. This will permanently delete your
-              account and remove your data from our servers.
+              Fill in the form to edit the question.
             </DialogDescription>
           </DialogHeader>
+          <Form {...addForm}>
+            <form
+              onSubmit={addForm.handleSubmit(onAddSubmit)}
+              className="space-y-4"
+            >
+              <FormInput
+                label="Question"
+                name="question"
+                placeholder="Question"
+              />
+              <FormInput
+                label="Question weight"
+                name="weight"
+                placeholder="Question weight"
+                type="number"
+              />
+              <FormInput
+                label="Choice 1"
+                name="choices[0]"
+                placeholder="Choice 1"
+              />
+              <FormInput
+                label="Choice 2"
+                name="choices[1]"
+                placeholder="Choice 2"
+              />
+              <FormInput
+                label="Choice 3"
+                name="choices[2]"
+                placeholder="Choice 3"
+              />
+              <FormInput
+                label="Choice 4"
+                name="choices[3]"
+                placeholder="Choice 4"
+              />
+              <FormInput label="Answer" name="answer" placeholder="Answer" />
+              <Button disabled={loading} type="submit">
+                {loading ? "Loading" : "Update question"}
+              </Button>
+            </form>
+          </Form>
         </DialogContent>
       </Dialog>
     </>
