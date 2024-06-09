@@ -26,9 +26,7 @@ const WaitingRoom = async ({ params }: { params: { id: string } }) => {
           <p>{quizDetail.quiz.participants?.length || "No"} participants</p>
           <Timer target={quizDetail.quiz.start_time} />
         </div>
-        <Link href={`/quiz/${params.id}/start`}>
-          <StartButton session={session} quiz={quizDetail.quiz} />
-        </Link>
+        <StartButton session={session} quiz={quizDetail.quiz} />
       </div>
     </main>
   );

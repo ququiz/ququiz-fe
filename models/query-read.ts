@@ -27,8 +27,8 @@ type QuestionAndUserAnswer = {
   type: QuestionType;
   choices: Choice[];
   weight: number;
-  userChoice: string;
-  userAnswer: string;
+  user_choice: string;
+  user_answer: string;
 };
 
 /**
@@ -55,7 +55,7 @@ type GetQuestionRes = {
 }[];
 
 type GetUserAnswerRes = {
-  user_answers: QuestionAndUserAnswer[];
+  user_answer: QuestionAndUserAnswer[];
 };
 
 type GetQuizDetailRes = {

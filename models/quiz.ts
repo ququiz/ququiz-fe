@@ -11,6 +11,7 @@ type Choice = {
 };
 
 type Question = {
+  id: string;
   question: string;
   type: QuestionType;
   weight: number;

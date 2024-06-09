@@ -1,11 +1,13 @@
 import { cn } from "@/lib/utils";
-import { Check, Edit, GripVertical, Trash2, X } from "lucide-react";
+import { ArrowLeft, Check, Edit, GripVertical, Trash2, X } from "lucide-react";
 
 type QuestionCardProps = {
   isCorrect: boolean;
+  ans: QuestionAndUserAnswer;
+  index: number;
 };
 
-const QuestionCard = ({ isCorrect = true }: QuestionCardProps) => {
+const QuestionCard = ({ isCorrect, ans, index }: QuestionCardProps) => {
   return (
     <div
       className={cn(
@@ -16,28 +18,26 @@ const QuestionCard = ({ isCorrect = true }: QuestionCardProps) => {
     >
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-4">
-          <span>1) Question</span>
+          <span>
+            {index + 1}) {ans.question}
+          </span>
         </div>
       </div>
       <div className="text-sm space-y-2">
         <p>Answer choices</p>
         <div className="space-y-4 ml-3">
-          <div className="flex items-center space-x-2">
-            <Check />
-            <span>Answer choice 1</span>
-          </div>
-          <div className="flex items-center space-x-2">
-            <X />
-            <span>Answer choice 2</span>
-          </div>
-          <div className="flex items-center space-x-2">
-            <X />
-            <span>Answer choice 3</span>
-          </div>
-          <div className="flex items-center space-x-2">
-            <X />
-            <span>Answer choice 4</span>
-          </div>
+          {ans.choices.map((choice) => (
+            <div key={choice.id} className="flex items-center space-x-2">
+              {choice.is_correct ? <Check /> : <X />}
+              <span>{choice.text}</span>
+              {choice.id === ans.user_choice && !isCorrect && (
+                <>
+                  <ArrowLeft />
+                  <span>Your answer</span>
+                </>
+              )}
+            </div>
+          ))}
         </div>
       </div>
     </div>
