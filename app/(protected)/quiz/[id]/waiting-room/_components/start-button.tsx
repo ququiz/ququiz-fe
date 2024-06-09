@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { joinQuiz } from "@/lib/quiz-service";
 import { Session } from "next-auth";
 import { useRouter } from "next/navigation";
-import { useTransition } from "react";
+import { use, useEffect, useState, useTransition } from "react";
 import { toast } from "sonner";
 
 type StartButtonProps = {
@@ -15,6 +15,15 @@ type StartButtonProps = {
 const StartButton = ({ quiz, session }: StartButtonProps) => {
   const [loading, startTransition] = useTransition();
   const router = useRouter();
+  const [currentTime, setCurrentTime] = useState(new Date().getTime());
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentTime(new Date().getTime());
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   const handleStartQuiz = () => {
     startTransition(async () => {
@@ -32,9 +41,7 @@ const StartButton = ({ quiz, session }: StartButtonProps) => {
   return (
     <Button
       onClick={handleStartQuiz}
-      disabled={
-        new Date().getTime() < new Date(quiz.start_time).getTime() || loading
-      }
+      disabled={currentTime < new Date(quiz.start_time).getTime() || loading}
       className="w-[25rem]"
     >
       Start
