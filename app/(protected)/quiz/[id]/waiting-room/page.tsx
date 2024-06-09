@@ -5,7 +5,6 @@ import Link from "next/link";
 import Timer from "../../../../../components/timer";
 import StartButton from "./_components/start-button";
 
-// TODO: Display creator data, wait backend to implement
 const WaitingRoom = async ({ params }: { params: { id: string } }) => {
   const session = await auth();
   if (!session) {
@@ -21,10 +20,9 @@ const WaitingRoom = async ({ params }: { params: { id: string } }) => {
     <main className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
       <div className="flex text-center gap-y-5 flex-col items-center">
         <div>
-          <h1 className="text-5xl mb-4 font-semibold">
-            {quizDetail.quiz.name}
-          </h1>
-          <h2 className="text-2xl font-medium">Waiting Room</h2>
+          <h1 className="text-5xl mb-4 font-semibold">Waiting Room</h1>
+          <h2 className="text-3xl font-semibold">{quizDetail.quiz.name}</h2>
+          <p className="font-medium">By {quizDetail.quiz.creator_name}</p>
           <p>{quizDetail.quiz.participants?.length || "No"} participants</p>
           <Timer target={quizDetail.quiz.start_time} />
         </div>

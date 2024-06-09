@@ -34,7 +34,12 @@ const EditQuiz = async ({ params }: { params: { id: string } }) => {
       <Separator className="my-4" />
       <div className="space-y-4">
         {quiz.quiz.questions.map((q) => (
-          <QuestionCard key={q.question} />
+          <QuestionCard
+            quiz={quiz.quiz}
+            allQuestions={quiz.quiz.questions}
+            question={q}
+            key={q.question}
+          />
         ))}
         <NewQuestionCard quiz={quiz.quiz} session={session} />
       </div>

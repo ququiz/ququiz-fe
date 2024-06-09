@@ -13,6 +13,7 @@ type Quiz = {
   id: string;
   name: string;
   creator_id: string;
+  creator_name: string;
   passcode: string;
   start_time: string; // ISO 8601 date string
   end_time: string; // ISO 8601 date string

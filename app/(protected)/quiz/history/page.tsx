@@ -17,7 +17,7 @@ const QuizHistory = async () => {
     <main>
       <h2 className="font-medium text-3xl">Quiz History</h2>
       <div className="grid mt-8 grid-cols-4 gap-4">
-        {quizHistory ? (
+        {quizHistory && quizHistory.length !== 0 ? (
           quizHistory.map((quiz) => (
             <QuizCard
               quiz={quiz}

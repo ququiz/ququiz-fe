@@ -8,7 +8,6 @@ type QuizCardProps = {
   href: string;
 };
 
-// TODO: Display creator data, wait backend to implement
 const QuizCard = async ({ quiz, href }: QuizCardProps) => {
   return (
     <Link className="block" href={href}>
@@ -26,7 +25,7 @@ const QuizCard = async ({ quiz, href }: QuizCardProps) => {
           <p className="text-gray-400 text-sm">
             {quiz.participants?.length || "No"} participants
           </p>
-          <p className="text-gray-400 text-xs">By</p>
+          <p className="text-gray-400 text-xs">By {quiz.creator_name}</p>
         </div>
       </div>
     </Link>
