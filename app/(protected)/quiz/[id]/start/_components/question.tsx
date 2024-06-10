@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 type QuestionProps = {
   question: Question;
@@ -35,7 +36,10 @@ const Question = ({
             <Button
               disabled={loading}
               key={c.id}
-              className="shadow-md"
+              className={cn(
+                "shadow-md transition",
+                loading && (c.is_correct ? "bg-green-200" : "bg-red-200")
+              )}
               variant={"secondary"}
               onClick={() => handleNextQuestion(c.id)}
             >
