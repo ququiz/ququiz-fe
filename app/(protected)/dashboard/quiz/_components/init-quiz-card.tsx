@@ -107,10 +107,7 @@ const InitQuizCard = ({ session }: InitQuizCardProps) => {
               <FormRadio
                 label="Question type"
                 name="questions[0].type"
-                items={[
-                  { value: "MULTIPLE", label: "Multiple choice" },
-                  { value: "ESSAY", label: "Multiple choice (with images)" },
-                ]}
+                items={[{ value: "MULTIPLE", label: "Multiple choice" }]}
               />
               <FormInput
                 label="Question weight"
