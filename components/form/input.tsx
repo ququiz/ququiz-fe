@@ -48,6 +48,7 @@ const FormInput = forwardRef(
                 placeholder={placeholder}
                 type={type}
                 {...field}
+                className={`${type === "datetime-local" && "block"}`}
               />
             </FormControl>
             <FormMessage />
