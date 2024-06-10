@@ -52,9 +52,9 @@ const InitQuizCard = ({ session }: InitQuizCardProps) => {
         toast.success("Quiz created successfully");
         addForm.reset(getDefaults(initQuizSchema));
         if (data.data) {
-          router.push(`/dashboard/quiz/${data.data.created_quiz.id}/edit`);
+          revalidatePathServer("/dashboard/quiz", "page");
           revalidatePathServer("/dashboard");
-          revalidatePathServer("/dashboard/quiz");
+          router.push(`/dashboard/quiz/${data.data.created_quiz.id}/edit`);
         }
       }
     });
